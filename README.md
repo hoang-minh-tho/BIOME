@@ -1,6 +1,6 @@
-# Databio16S 🧬
+# A software for analysing bacterial and eukaryotic diversity  🧬
 
-**Databio16S** is a Windows desktop application for end-to-end 16S rRNA amplicon sequencing analysis. It combines an intuitive graphical user interface developed in Python with an automated R-based microbiome analysis pipeline.
+**Databio** is a Windows desktop application for end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines an intuitive graphical user interface developed in Python with an automated R-based microbiome analysis pipeline.
 
 The application is built on the **Automated Microbiome R Pipeline**, enabling researchers to perform microbiome analysis without interacting directly with R scripts or the command line.
 >
@@ -30,7 +30,7 @@ The application is built on the **Automated Microbiome R Pipeline**, enabling re
 Raw FASTQ + Metadata
           │
           ▼
-     Databio16S 
+       Databio
           │
           ▼
 Automated Microbiome R Pipeline
@@ -53,13 +53,13 @@ Results
 Download the latest installer or portable version from the **Releases** page.
 
 ```
-Databio16S-Setup-v1.0.0.exe
+Databio-Setup-v1.0.0.exe
 ```
 
 or
 
 ```
-Databio16S-Portable-v1.0.0.zip
+Databio-Portable-v1.0.0.zip
 ```
 ---
 
