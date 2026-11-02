@@ -1,4 +1,5 @@
-# BIOME: Bioinformatic Interface for Optimized Multi-marker Ecology 
+<img width="1003" height="334" alt="image" src="https://github.com/user-attachments/assets/9621f03e-e4f1-4f59-a1cf-0146909dd60b" />
+
 
 **BIOME** is a Windows desktop application for automated end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines a Python-based graphical user interface with an integrated DADA2-based R pipeline, enabling users to process raw sequencing data through quality control, ASV inference, taxonomic classification, diversity analyses, differential abundance testing, and publication-ready visualizations.
 
@@ -8,21 +9,18 @@ The application is built on the **Automated Microbiome R Pipeline**, enabling re
 >
 > https://github.com/hoang-minh-tho/Automated-Microbiome-R-Pipeline.git
 
----
-
 # Features
 
-- Graphical desktop interface
-- Automatic FASTQ file pairing
-- Metadata validation
 - Integrated primer removal using Cutadapt
-- Automated DADA2 workflow
-- Taxonomic assignment
-- Alpha and beta diversity analysis
-- Publication-ready figures and summary tables
-- Windows installer and portable version
-
----
+- Automated DADA2-based ASV inference pipeline
+- Automatic quality filtering and read trimming
+- Advanced options for read processing and parameter optimization
+- Automatic taxonomic assignment using SILVA (16S) and PR2 or SILVA (18S)
+- Automatic rarefaction depth selection
+- Alpha and beta diversity analyses
+- Differential abundance analysis
+- Publication-ready figures, and tables
+- Supports both 16S and 18S rRNA amplicon sequencing
 
 # Pipeline Overview
 
@@ -30,75 +28,45 @@ The application is built on the **Automated Microbiome R Pipeline**, enabling re
 Raw FASTQ + Metadata
           │
           ▼
-       Databio
+        BIOME
           │
           ▼
 Automated Microbiome R Pipeline
           │
           ▼
-Results
- • ASV table
- • Taxonomy
- • Diversity analysis
- • Figures
- • Reports
-```
+       Outputs
 
----
+```
 
 # Installation
 
-## Windows (Recommended)
-
-Download the latest installer or portable version from the **Releases** page.
+Download the latest installer or portable version from the **Releases** section.
 
 ```
-Databio-Setup-v1.0.0.exe
+BIOME-Setup-v1.0.0.exe
 ```
 
 or
 
 ```
-Databio-Portable-v1.0.0.zip
+BIOME-Portable-v1.0.0.zip
 ```
----
 
 # Usage
 
 1. Select the FASTQ folder.
 2. Select the metadata file.
 3. Choose an output directory.
-4. Enter primer sequences if required.
+4. Enter primer sequences.
 5. Configure analysis parameters.
-6. Click **Run Pipeline**.
-
----
+6. Click **Run selected steps**.
 
 # Outputs
 
 The pipeline generates:
 
-- ASV abundance table
-- Taxonomic assignments
-- Phyloseq object
-- Alpha diversity analysis
-- Beta diversity analysis
-- Publication-ready figures
-- Summary report
+- Tables
+- Figures
+- .rds files
 - Log files
 
----
-
-# License
-
-This project is distributed under the MIT License.
-
----
-
-# Related Projects
-
-**Automated Microbiome R Pipeline**
-
-Standalone R implementation of the analysis workflow.
-
-https://github.com/grace-hoang/Automated-Microbiome-R-Pipeline
