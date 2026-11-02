@@ -1,8 +1,8 @@
-# A software for analysing bacterial and eukaryotic diversity  🧬
+# BIOME: Bioinformatic Interface for Optimized Multi-marker Ecology 
 
-**Databio** is a Windows desktop application for end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines an intuitive graphical user interface developed in Python with an automated R-based microbiome analysis pipeline.
+**BIOME** is a Windows desktop application for automated end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines a Python-based graphical user interface with an integrated DADA2-based R pipeline, enabling users to process raw sequencing data through quality control, ASV inference, taxonomic classification, diversity analyses, differential abundance testing, and publication-ready visualizations.
 
-The application is built on the **Automated Microbiome R Pipeline**, enabling researchers to perform microbiome analysis without interacting directly with R scripts or the command line.
+The application is built on the **Automated Microbiome R Pipeline**, enabling researchers to perform microbiome analysis without writing R scripts or using the command line.
 >
 > **Automated-Microbiome-R-Pipeline**
 >
