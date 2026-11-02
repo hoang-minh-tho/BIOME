@@ -423,7 +423,7 @@
       <ul class="nav-links">
         <li><a href="#features">Features</a></li>
         <li><a href="#tutorial">Tutorial</a></li>
-        <li><a href="#dataset">Demo Dataset</a></li>
+        <li><a href="#dataset">Test Dataset</a></li>
         <li><a href="#download">Download</a></li>
         <li><a href="#citation">Citation</a></li>
         <li>
@@ -444,10 +444,10 @@
     
     <div class="hero-badges">
       <span class="badge badge-primary">⭐ Open Source (MIT)</span>
-      <span class="badge">💻 Windows Desktop GUI</span>
-      <span class="badge">🧬 16S & 18S Dual-Marker</span>
-      <span class="badge">⚡ Automated DADA2 Backend</span>
-      <span class="badge">📊 Publication Figures</span>
+      <span class="badge">💻 Windows desktop GUI</span>
+      <span class="badge">🧬 16S & 18S marker</span>
+      <span class="badge">⚡ Automated DADA2 backend</span>
+      <span class="badge">📊 Publication figures</span>
     </div>
 
     <h1 class="hero-title">Automated, High-Resolution Amplicon Sequencing Analysis</h1>
@@ -458,26 +458,20 @@
     <div class="hero-actions">
       <a href="#download" class="btn btn-primary">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        Download for Windows (v1.0)
+        Download for Windows 
       </a>
       <a href="#dataset" class="btn btn-secondary">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-        Download Demo Dataset
+        Download test dataset
       </a>
       <a href="#tutorial" class="btn btn-secondary">
         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-        User Manual
+        User manual
       </a>
     </div>
   </main>
 
   <!-- Key Features -->
-  <section id="features" class="section">
-    <div class="section-header">
-      <span class="section-tag">Capabilities</span>
-      <h2 class="section-title">Designed for Modern Microbial Ecology</h2>
-    </div>
-
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧬</div>
@@ -506,7 +500,7 @@
       <div class="feature-card">
         <div class="feature-icon">🖼️</div>
         <h3>Publication-Grade Visuals</h3>
-        <p>Direct export of vector PDFs and 300 DPI PNGs for Relative Abundance, Alpha Diversity boxplots, and PCoA ordination with 95% confidence ellipses.</p>
+        <p>Save PDFs and PNGs for relative abundance, alpha diversity and beta diversity boxplots.</p>
       </div>
     </div>
   </section>
@@ -514,26 +508,26 @@
   <!-- Step-by-Step Tutorial -->
   <section id="tutorial" class="section">
     <div class="section-header">
-      <span class="section-tag">User Manual</span>
+      <span class="section-tag">User Mmnual</span>
       <h2 class="section-title">Step-by-Step Walkthrough</h2>
     </div>
 
     <div class="tutorial-container">
       <div class="tab-nav">
         <button class="tab-btn active" onclick="switchTab(0)">
-          📁 Part 1: Project Setup
+          Tab 1: Project 
         </button>
         <button class="tab-btn" onclick="switchTab(1)">
-          ⚙️ Part 2: Read Processing
+          Tab 2: Read processing
         </button>
         <button class="tab-btn" onclick="switchTab(2)">
-          📊 Part 3: Downstream Analysis
+          Tab 3: Downstream analysis
         </button>
       </div>
 
       <!-- Tab 1: Project -->
       <div class="tab-content active" id="tab-0">
-        <h3>Part 1: Project Setup & Execution</h3>
+        <h3>Tab 1: Project </h3>
         <p>Configure input files, experimental design groups, and allocate hardware resources.</p>
         
         <table class="param-table">
@@ -581,7 +575,7 @@
 
       <!-- Tab 2: Read Processing -->
       <div class="tab-content" id="tab-1">
-        <h3>Part 2: Read Processing & Quality Filtering</h3>
+        <h3>Tab 2: Read processing </h3>
         <p>Fine-tune primer trimming, automated quality truncation, DADA2 denoising, and read merging.</p>
 
         <table class="param-table">
@@ -589,13 +583,13 @@
             <tr>
               <th>Parameter</th>
               <th>Default</th>
-              <th>Description & Best Practice</th>
+              <th>Description </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Primer removal</strong></td>
-              <td>Forward & Reverse sequences</td>
+              <td>Forward and reverse sequences</td>
               <td>Trims synthetic amplification primers from 5' ends with degenerate IUPAC support.</td>
             </tr>
             <tr>
@@ -629,7 +623,7 @@
 
       <!-- Tab 3: Downstream -->
       <div class="tab-content" id="tab-2">
-        <h3>Part 3: Downstream Ecological & Statistical Analysis</h3>
+        <h3>Tab 3: Downstream analysis</h3>
         <p>Perform rarefaction, alpha/beta diversity, PERMANOVA, and bias-corrected differential abundance.</p>
 
         <table class="param-table">
@@ -642,7 +636,7 @@
           </thead>
           <tbody>
             <tr>
-              <td><strong>Rarefaction Strategy</strong></td>
+              <td><strong>Rarefaction strategy</strong></td>
               <td><span class="param-code">Automatic Plateau</span></td>
               <td>Finds optimal depth $N_{opt}$ balancing species saturation against sample retention.</td>
             </tr>
@@ -682,7 +676,7 @@
     </div>
   </section>
 
-  <!-- Demo Dataset -->
+  <!-- Test dataset -->
   <section id="dataset" class="section">
     <div class="section-header">
       <span class="section-tag">Validation</span>
@@ -698,8 +692,8 @@
         <li><strong>Wounded / Grazed corals:</strong> Predated by corallivorous snail <em>Drupella rugosa</em> (FOR_G, MIL_G).</li>
         <li><strong>Biological Controls:</strong> Snail gut content (GUT) and surrounding Seawater (WAT).</li>
       </ul>
-      <a href="https://github.com/hoang-minh-tho/BIOME/releases/download/v1.0.0/NhaTrang_Coral_Demo_18Samples.zip" class="btn btn-secondary">
-        ⬇️ Download NhaTrang_Coral_Demo_18Samples.zip (~280 MB)
+      <a href="https://github.com/hoang-minh-tho/BIOME/releases/download/v1.0.0/NhaTrang_Coral_Test_18Samples.zip" class="btn btn-secondary">
+        ⬇️ Download NhaTrang_Coral_Test_18Samples.zip (~280 MB)
       </a>
     </div>
   </section>
