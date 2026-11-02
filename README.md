@@ -6,7 +6,7 @@ The application is built on the **Automated Microbiome R Pipeline**, enabling re
 >
 > **Automated-Microbiome-R-Pipeline**
 >
-> https://github.com/grace-hoang/Automated-Microbiome-R-Pipeline
+> https://github.com/hoang-minh-tho/Automated-Microbiome-R-Pipeline.git
 
 ---
 
