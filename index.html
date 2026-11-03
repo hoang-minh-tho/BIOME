@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIOME — Bioinformatic Interface for Optimized Multi-Marker Ecology</title>
+  <title>BIOME - Bioinformatic Interface for Optimized Multi-Marker Ecology</title>
   <meta name="description" content="A standalone desktop application for automated amplicon sequencing analysis (16S & 18S rRNA) with DADA2, adaptive plateau rarefaction, and publication-ready figures.">
   <link rel="icon" type="image/svg+xml" href="biome-symbol-exact.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -491,52 +491,149 @@
       </div>
 
       <!-- Tab 1: Project -->
-      <div class="tab-content active" id="tab-0">
-        <h3>Tab 1: Project </h3>
-        <p>Configure input files, experimental design groups, and allocate hardware resources.</p>
-        
-        <table class="param-table">
-          <thead>
-            <tr>
-              <th>Field / Control</th>
-              <th>Options</th>
-              <th>Purpose & Scientific Recommendation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Marker</strong></td>
-              <td><span class="param-code">16S</span> / <span class="param-code">18S</span></td>
-              <td>Selects taxonomic schema (Prokaryotes vs. Microeukaryotes) and default training set.</td>
-            </tr>
-            <tr>
-              <td><strong>FASTQ folder / ZIP</strong></td>
-              <td>Path / <code>.zip</code></td>
-              <td>Directory with paired reads (e.g. <code>*_R1*.fastq.gz</code> and <code>*_R2*.fastq.gz</code>).</td>
-            </tr>
-            <tr>
-              <td><strong>Metadata file</strong></td>
-              <td><code>.tsv</code> / <code>.csv</code></td>
-              <td>Must contain a <code>SampleID</code> column matching FASTQ prefixes, plus grouping columns.</td>
-            </tr>
-            <tr>
-              <td><strong>Comparison group</strong></td>
-              <td>Dropdown</td>
-              <td>Experimental factor to test (e.g. <code>Group</code> for Healthy vs Grazed vs Water).</td>
-            </tr>
-            <tr>
-              <td><strong>Reference group</strong></td>
-              <td>Dropdown</td>
-              <td>Baseline control level for ANCOM-BC log-fold change calculations (e.g. <code>Healthy</code>).</td>
-            </tr>
-            <tr>
-              <td><strong>Threads</strong></td>
-              <td><span class="param-code">Auto</span> / Integer</td>
-              <td>Sets parallel CPU cores. <code>Auto</code> automatically reserves $N-1$ CPU cores.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<div class="tab-content active" id="tab-0">
+  <h3>Project</h3>
+  <p>
+    The <strong>Project</strong> tab is where you define the project input files,
+    select the sequencing marker, choose the comparison groups, and decide how
+    far the pipeline should run.
+  </p>
+  <h4>Marker</h4>
+  <p>
+    Choose <strong>16S</strong> for bacterial 16S rRNA amplicon sequencing data.
+    This profile applies bacterial taxonomy filtering and produces relative
+    abundance summaries at the <strong>Phylum</strong> and
+    <strong>Genus</strong> levels.
+  </p>
+  <p>
+    Choose <strong>18S</strong> for eukaryotic 18S amplicon sequencing data.
+    This profile applies eukaryotic taxonomy filtering and reports relative
+    abundance at the <strong>Division</strong> and
+    <strong>Genus</strong> levels.
+  </p>
+  <p>
+    The suggested reference below the marker indicates the recommended taxonomy
+    database. BIOME does not download or select this database automatically.
+  </p>
+  <hr>
+  <h4>Project files</h4>
+  <p>
+    The project requires the following input files:
+  </p>
+  <ul>
+    <li>FASTQ folder</li>
+    <li>Metadata file</li>
+    <li>Output folder</li>
+    <li>Reference database (required only for Taxonomy or Downstream analysis)</li>
+  </ul>
+  <p>
+    Each location can be selected with the <strong>Browse</strong> button or
+    entered manually.
+  </p>
+  <h5>FASTQ folder</h5>
+  <p>
+    Select a folder containing paired-end FASTQ files or a ZIP archive.
+    Supported file formats are
+    <code>.fastq</code>,
+    <code>.fq</code>,
+    <code>.fastq.gz</code>, and
+    <code>.fq.gz</code>.
+  </p>
+  <p>
+    Each sample must contain one forward (R1) read and one reverse (R2) read.
+  </p>
+<pre><code>Sample01_R1.fastq.gz
+Sample01_R2.fastq.gz
+
+Sample01_R1_001.fastq.gz
+Sample01_R2_001.fastq.gz
+
+Sample01_1.fq.gz
+Sample01_2.fq.gz
+</code></pre>
+  <p>
+    ZIP archives are extracted automatically before analysis. Compressed
+    <code>.gz</code> files are read directly and do not need to be decompressed.
+  </p>
+  <h5>Metadata file</h5>
+  <p>
+    The metadata file contains information about each sample.
+  </p>
+  <p>The file must:</p>
+  <ul>
+    <li>be a UTF-8 comma-separated <code>.csv</code> file</li>
+    <li>contain a column named <code>SampleID</code></li>
+    <li>contain at least one additional metadata column (for example <code>Condition</code>)</li>
+    <li>include one row for every sample</li>
+  </ul>
+<pre><code>SampleID,Condition
+Sample01,Healthy
+Sample02,Healthy
+Sample03,Grazed
+</code></pre>
+  <p>
+    The <code>SampleID</code> values must match the FASTQ filenames without the
+    read suffix or file extension.
+  </p>
+<pre><code>Sample01_R1.fastq.gz
+Sample01_R2.fastq.gz
+↓
+Sample01
+</code></pre>
+  <h5>Output folder</h5>
+  <p>
+    BIOME stores all analysis results in the selected output folder.
+    Each analysis is saved in its own automatically created subfolder to keep
+    results from different analyses separate.
+  </p>
+  <h5>Reference database</h5>
+  <p>
+    The reference database is used to assign taxonomy to inferred ASVs.
+    BIOME does not provide reference databases. Download a compatible reference
+    database yourself, then select its location.
+  </p>
+  <ul>
+    <li><strong>16S</strong>: DADA2-compatible SILVA training set</li>
+    <li><strong>18S</strong>: DADA2-formatted PR2 SSU/18S training set</li>
+  </ul>
+  <hr>
+  <h4>Analysis settings</h4>
+  <h5>Comparison group</h5>
+  <p>
+    Select the metadata column that defines the groups you want to compare.
+    For example, choosing <strong>Treatment</strong> compares treatment groups,
+    while choosing <strong>Location</strong> compares sampling locations.
+  </p>
+  <h5>Reference group</h5>
+  <p>
+    Select the reference (baseline) group for differential abundance analysis.
+  </p>
+  <hr>
+  <h4>Pipeline steps</h4>
+  <p>
+    BIOME consists of three analysis stages:
+  </p>
+  <ul>
+    <li>
+      <strong>Read processing</strong> – Removes primers, filters reads,
+      denoises sequences, merges paired reads, and removes chimeras.
+    </li>
+    <li>
+      <strong>Taxonomy</strong> – Assigns taxonomy to ASVs and generates
+      taxonomic summaries and relative abundance results.
+    </li>
+    <li>
+      <strong>Downstream analysis</strong> – Performs diversity analyses,
+      statistical tests, and group comparisons.
+    </li>
+  </ul>
+  <p>
+    Selecting a later stage automatically includes all required earlier stages.
+    To run only <strong>Read processing</strong>, deselect
+    <strong>Downstream analysis</strong> first, then deselect
+    <strong>Taxonomy</strong>.
+  </p>
+</div>
 
       <!-- Tab 2: Read Processing -->
       <div class="tab-content" id="tab-1">
