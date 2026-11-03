@@ -372,7 +372,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     }
 
-    /* Citation Box */
+    /* How to cite Box */
     .cite-box {
       background: var(--dark);
       color: #F8FAFC;
@@ -425,7 +425,7 @@
         <li><a href="#tutorial">User manual</a></li>
         <li><a href="#dataset">Test dataset</a></li>
         <li><a href="#download">Download</a></li>
-        <li><a href="#citation">Citation</a></li>
+        <li><a href="#howtocite">How to cite</a></li>
         <li>
           <a href="https://github.com/hoang-minh-tho/BIOME" target="_blank" class="btn-github">
             <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
@@ -474,8 +474,7 @@
   <!-- Step-by-Step Tutorial -->
   <section id="tutorial" class="section">
     <div class="section-header">
-      <span class="section-tag">User manual</span>
-      <h2 class="section-title">Step-by-Step Walkthrough</h2>
+      <h2 class="section-title">User manual</h2>
     </div>
 
     <div class="tutorial-container">
@@ -645,8 +644,7 @@
   <!-- Test dataset -->
   <section id="dataset" class="section">
     <div class="section-header">
-      <span class="section-tag">Test dataset</span>
-      <h2 class="section-title">Nha Trang Coral Microbiome Benchmark Dataset</h2>
+      <h2 class="section-title">Test dataset</h2>
     </div>
 
     <div class="feature-card">
@@ -667,7 +665,7 @@
   <!-- Download Section -->
   <section id="download" class="section">
      <div class="section-header">
-    <span class="section-tag">Download app</span>
+    <h2 class="section-title">Download app</h2>
   </div>
     <div class="download-box">
       <h2>Get Started with BIOME</h2>
@@ -678,11 +676,10 @@
     </div>
   </section>
 
-  <!-- Citation Section -->
-  <section id="citation" class="section">
+  <!-- How to cite Section -->
+  <section id="howtocite" class="section">
     <div class="section-header">
-      <span class="section-tag">Citation</span>
-      <h2 class="section-title">How to Cite</h2>
+      <h2 class="section-title">How to cite</h2>
     </div>
 
     <p style="text-align: center; max-width: 700px; margin: 0 auto 1.5rem; color: var(--gray-text);">
@@ -690,7 +687,7 @@
     </p>
 
     <div class="cite-box">
-      <button class="btn-copy" onclick="copyCitation()">Copy Citation</button>
+      <button class="btn-copy" onclick="copyHowtocite()">Copy How to cite</button>
       <pre class="cite-pre" id="cite-text">@article{hoang2026biome,
 
 }</pre>
@@ -715,12 +712,12 @@
       });
     }
 
-    function copyCitation() {
+    function copyHowtocite() {
       const text = document.getElementById('cite-text').innerText;
       navigator.clipboard.writeText(text).then(() => {
         const btn = document.querySelector('.btn-copy');
         btn.innerText = 'Copied!';
-        setTimeout(() => { btn.innerText = 'Copy Citation'; }, 2000);
+        setTimeout(() => { btn.innerText = 'Copy How to cite'; }, 2000);
       });
     }
   </script>
