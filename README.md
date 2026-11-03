@@ -35,6 +35,10 @@ Automated Microbiome R Pipeline
           │
           ▼
        Outputs
+   - Tables
+   - Figures
+   - .rds files
+   - Log files
 
 ```
 
@@ -64,6 +68,15 @@ BIOME-Portable-v1.0.0.zip
 # Outputs
 
 The pipeline generates:
+- Alpha diversity tables and boxplots
+- Beta diversity distance matrices
+- PCoA, NMDS, or PCA figures
+- PERMANOVA and betadisper results
+- Differential abundance tables
+- Relative abundance plots
+- Rarefaction curves
+- Publication-ready figures
+- Analysis logs
 
 - Tables
 - Figures
