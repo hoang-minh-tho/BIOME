@@ -1,4 +1,4 @@
-<img width="2048" height="768" alt="image" src="https://github.com/user-attachments/assets/77b30bbe-609b-4351-a9bf-1bf783ae9419" />
+<img width="2048" height="768" alt="image" src="https://github.com/user-attachments/assets/1088a628-1df1-47b8-8401-ef46a998ab49" />
 
 
 **BIOME** is a Windows desktop application for automated end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines a Python-based graphical user interface with an integrated DADA2-based R pipeline, enabling users to process raw sequencing data through quality control, ASV inference, taxonomic classification, diversity analyses, differential abundance testing, and publication-ready visualizations.
