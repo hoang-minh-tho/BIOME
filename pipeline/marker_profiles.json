@@ -1,0 +1,89 @@
+{
+  "16S": {
+    "label": "16S",
+    "primer_suggestions": {
+      "forward": "GTGYCAGCMGCCGCGGTAA",
+      "reverse": "GGACTACNVGGGTWTCTAAT"
+    },
+    "primer_note": "The fields are prefilled with primer suggestions; confirm they match your assay.",
+    "standalone_primers": {
+      "forward": "GGATTAGATACCCTGGTA",
+      "reverse": "CRRCACGAGCTGACGAC"
+    },
+    "reference_suggestion": "DADA2-compatible SILVA bacterial training set",
+    "default_reference_relative_path": "Silva/silva_nr99_v138.2_toGenus_trainset.fa.gz",
+    "taxonomy_ranks": [
+      "Kingdom",
+      "Phylum",
+      "Class",
+      "Order",
+      "Family",
+      "Genus"
+    ],
+    "target_domain_rank": "Kingdom",
+    "target_domain": "Bacteria",
+    "relative_abundance_ranks": [
+      "Phylum",
+      "Genus"
+    ],
+    "contaminant_rank": "Genus",
+    "contaminants": [],
+    "organelle_taxa": ["Mitochondria", "Chloroplast"],
+    "legacy_asv_length_filter": {
+      "enabled": true,
+      "minimum": 230,
+      "maximum": 280
+    },
+    "default_merge_overlap": 12,
+    "default_trim_left": [
+      19,
+      20
+    ],
+    "default_min_read_length": 50
+  },
+  "18S": {
+    "label": "18S",
+    "primer_suggestions": {
+      "forward": "",
+      "reverse": ""
+    },
+    "primer_note": "Select assay-specific primers or enter primer lengths for your 18S region.",
+    "standalone_primers": {
+      "forward": "",
+      "reverse": ""
+    },
+    "reference_suggestion": "DADA2-formatted PR2 SSU/18S training FASTA",
+    "default_reference_relative_path": null,
+    "taxonomy_ranks": [
+      "Domain",
+      "Supergroup",
+      "Division",
+      "Subdivision",
+      "Class",
+      "Order",
+      "Family",
+      "Genus",
+      "Species"
+    ],
+    "target_domain_rank": "Domain",
+    "target_domain": "Eukaryota",
+    "relative_abundance_ranks": [
+      "Division",
+      "Genus"
+    ],
+    "contaminant_rank": "Genus",
+    "contaminants": [],
+    "organelle_taxa": [],
+    "legacy_asv_length_filter": {
+      "enabled": false,
+      "minimum": null,
+      "maximum": null
+    },
+    "default_merge_overlap": 12,
+    "default_trim_left": [
+      0,
+      0
+    ],
+    "default_min_read_length": 50
+  }
+}
