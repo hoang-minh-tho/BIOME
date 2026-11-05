@@ -609,8 +609,9 @@ Sample01_R2.fastq.gz</code></pre>
 <div class="tab-content" id="tab-2" role="tabpanel" aria-labelledby="manual-tab-2" tabindex="0" hidden><h3>Downstream analysis</h3><p>The Downstream analysis tab contains the settings for taxonomic summarization, diversity analyses, statistical testing, differential abundance analysis, and publication-ready visualizations.</p><fieldset class="manual-group"><legend>Taxonomy</legend><p>Taxonomy is assigned using the selected DADA2-compatible reference database and marker profile.</p></fieldset><fieldset class="manual-group"><legend>Rarefaction</legend><p>Rarefaction equalizes sequencing depth across samples before calculating diversity metrics.</p>
 <p>Choose one of the three modes below.</p>
 <h4>Automatic</h4>
-<p>BIOME rejects depths exceeding the maximum sample loss or failing the richness plateau criterion. Among the remaining candidates, it retains the most samples, breaking ties by greatest sequencing depth.</p>
-<p>If no candidate meets the plateau criterion, it retains the most samples within the sample-loss limit, again breaking ties by greatest depth.</p>
+<p>Automatic rarefaction evaluates the sample read counts as candidate depths. The maximum sample loss setting excludes depths that remove too many samples (default: 10%, retaining at least 90% of samples).</p>
+<p>For each remaining depth, BIOME estimates the increase in ASV richness with an additional read step (default: 1,000 reads). A sample is considered to have reached a plateau if the estimated richness gain is no greater than the plateau gain threshold (default: 2%). If fewer than 1,000 additional reads are available, the gain is scaled accordingly.</p>
+<p>The minimum samples reaching plateau setting specifies the proportion of retained samples that must reach a plateau (default: 90%). BIOME then selects the depth that retains the most samples while satisfying both the sample-loss and plateau criteria. If no depth qualifies, BIOME issues a warning and uses the lowest observed sample depth.</p>
 <h4>Advanced automatic settings</h4>
 <p>These settings determine how conservative the automatic selection will be.</p>
 <div class="manual-table-wrap"><table class="param-table"><thead><tr><th scope="col">Parameter</th><th scope="col">Recommended</th><th scope="col">Meaning</th></tr></thead><tbody>
