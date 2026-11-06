@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIOME - Bioinformatic Interface for Optimized Multi-Marker Ecology</title>
+  <meta name="description" content="A standalone desktop application for automated amplicon sequencing analysis (16S & 18S rRNA) with DADA2, adaptive plateau rarefaction, and publication-ready figures.">
+  <link rel="icon" type="image/svg+xml" href="biome-symbol-exact.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8B002B;
+      --primary-dark: #67001F;
+      --primary-light: #B31541;
+      --primary-subtle: #FFF0F3;
+      --accent: #E11D48;
+      --dark: #0F172A;
+      --dark-light: #1E293B;
+      --gray-light: #F8FAFC;
+      --gray-border: #E2E8F0;
+      --gray-text: #64748B;
+      --text: #1E293B;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(139,0,43,0.08), 0 4px 6px -4px rgba(139,0,43,0.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background-color: #FAFAFA;
+      line-height: 1.6;
+    }
+    a { color: var(--primary); text-decoration: none; transition: all 0.2s; }
+    a:hover { color: var(--primary-light); }
+    code, pre { font-family: 'Fira Code', monospace; }
+
+    /* Header & Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+    .logo-badge {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      border: 1px solid rgba(139,0,43,0.15);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      list-style: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .nav-links a { color: var(--dark-light); }
+    .nav-links a:hover { color: var(--primary); }
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      background: var(--dark);
+      color: #fff !important;
+      font-size: 0.9rem;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-github:hover {
+      background: var(--dark-light);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 1200px;
+      margin: 2.5rem auto 3.5rem;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      color: var(--dark-light);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .badge-primary {
+      background: var(--primary-subtle);
+      border-color: rgba(139,0,43,0.2);
+      color: var(--primary);
+    }
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.25;
+      letter-spacing: -0.8px;
+      margin-bottom: 1rem;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--gray-text);
+      max-width: 780px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff !important;
+      box-shadow: 0 4px 14px rgba(139,0,43,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139,0,43,0.4);
+    }
+    .btn-secondary {
+      background: #fff;
+      color: var(--dark-light) !important;
+      border: 1px solid var(--gray-border);
+    }
+    .btn-secondary:hover {
+      background: var(--gray-light);
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
+
+    /* Features Grid */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-tag {
+      color: var(--primary);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(139,0,43,0.3);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--primary-subtle);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 0.6rem;
+    }
+    .feature-card p {
+      color: var(--gray-text);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Interactive Tutorial Tabs */
+    .tutorial-container {
+      background: #fff;
+      border: 1px solid var(--gray-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .tab-nav {
+      display: flex;
+      background: var(--gray-light);
+      border-bottom: 1px solid var(--gray-border);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 1.1rem 1.5rem;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gray-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.2s;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--primary); background: #fff; }
+    .tab-btn.active {
+      color: var(--primary);
+      background: #fff;
+      border-bottom-color: var(--primary);
+    }
+    .tab-content {
+      padding: 2.5rem;
+      display: none;
+    }
+    .tab-content.active { display: block; }
+    .tab-content h3 {
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+    .tab-content p {
+      color: var(--dark-light);
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .param-table th, .param-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--gray-border);
+      text-align: left;
+    }
+    .param-table th {
+      background: var(--gray-light);
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .param-table tr:hover { background: #FCFCFD; }
+    .param-code {
+      background: #F1F5F9;
+      color: var(--primary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+    }
+
+    /* Dataset & Download Section */
+    .dataset-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .download-box {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-top: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .download-box h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+    }
+    .download-box p {
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 650px;
+      margin: 0 auto 2rem;
+      font-size: 1.1rem;
+    }
+    .download-box .btn-white {
+      background: #fff;
+      color: var(--primary) !important;
+      font-size: 1.05rem;
+      padding: 0.95rem 2rem;
+      font-weight: 800;
+    }
+    .download-box .btn-white:hover {
+      background: #F8FAFC;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* How to cite Box */
+    .cite-box {
+      background: var(--dark);
+      color: #F8FAFC;
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      position: relative;
+      margin-top: 1.5rem;
+    }
+    .cite-pre {
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #E2E8F0;
+    }
+    .btn-copy {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy:hover { background: rgba(255,255,255,0.25); }
+
+    /* Footer */
+    footer {
+      background: #fff;
+      border-top: 1px solid var(--gray-border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--gray-text);
+      font-size: 0.9rem;
+    }
+
+    /* Manual sections follow the desktop GUI's grouped panels. */
+    .manual-group { min-width: 0; border: 1px solid var(--gray-border); border-radius: 6px; padding: 1.15rem 1.3rem; margin: 1.6rem 0; background: #fff; }
+    .manual-group legend { padding: 0 .5rem; font-weight: 700; color: var(--primary); font-size: 1.05rem; }
+    .manual-group h4 { font-size: .98rem; margin: 1.2rem 0 .45rem; color: var(--dark); }
+    .manual-group h4:first-of-type { margin-top: .3rem; }
+    .manual-group p { margin-bottom: .8rem; }
+    .manual-group p:last-child { margin-bottom: 0; }
+    .manual-group ul { margin: .5rem 0 1rem; padding-left: 1.4rem; }
+    .manual-group li { margin: .3rem 0; }
+    .manual-group pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--gray-light); border: 1px solid var(--gray-border); border-radius: 6px; padding: .9rem 1rem; margin: .7rem 0 1rem; line-height: 1.65; }
+    .manual-group code { font-size: .88em; }
+    .manual-table-wrap { overflow-x: auto; }
+    .manual-group .param-table { margin: .7rem 0 1rem; }
+    .tab-content[hidden] { display: none; }
+    .tab-btn:focus-visible { outline: 3px solid var(--primary); outline-offset: -4px; }
+    @media (max-width: 640px) {
+      .tutorial-container .tab-content { padding: 1rem; }
+      .tutorial-container .tab-btn { padding: .9rem 1rem; font-size: .9rem; }
+      .manual-group { padding: .8rem; }
+      .manual-group .param-table th, .manual-group .param-table td { padding: .65rem; min-width: 7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo-link">
+        BIOME 
+      </a>
+      <ul class="nav-links">
+        <li><a href="#tutorial">User manual</a></li>
+        <li><a href="#dataset">Example</a></li>
+        <li><a href="#download">Download</a></li>
+        <li><a href="#howtocite">How to cite</a></li>
+        <li>
+          <a href="https://github.com/hoang-minh-tho/BIOME" target="_blank" class="btn-github">
+            <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="hero">
+
+    <div class="hero-badges">
+      <span class="badge">⭐ Open Source </span>
+      <span class="badge">💻 Windows desktop GUI</span>
+      <span class="badge">🧬 16S and 18S marker</span>
+      <span class="badge">⚡ Automated DADA2 backend</span>
+      <span class="badge">📊 Publication figures</span>
+    </div>
+
+    <h1 class="hero-title">Bioinformatic Interface for Optimized Multi-marker Ecology</h1>
+    <p class="hero-subtitle">
+      BIOME is a graphical desktop application for automated 16S and 18S rRNA amplicon analysis. It provides a DADA2-based workflow with user-defined parameters, allowing users to perform end-to-end microbiome analyses while retaining full control over read processing and downstream analyses.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#download" class="btn btn-primary">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        Download for Windows 
+      </a>
+      <a href="#dataset" class="btn btn-secondary">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+        Download example datasets
+      </a>
+      <a href="#tutorial" class="btn btn-secondary">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        User manual
+      </a>
+    </div>
+  </main>
+
+  <!-- Step-by-Step Tutorial -->
+  <section id="tutorial" class="section">
+    <div class="section-header">
+      <h2 class="section-title">User manual</h2>
+      <p>When you open BIOME, you will see three main tabs: Project, Read processing, and Downstream analysis. This manual explains each tab and provides guidance on selecting appropriate settings for your analysis.</p>
+    </div>
+
+    <div class="tutorial-container">
+<div class="tab-nav" role="tablist" aria-label="BIOME user manual"><button type="button" class="tab-btn active" id="manual-tab-0" role="tab" aria-controls="tab-0" aria-selected="true" tabindex="0" onclick="switchTab(0)">Project</button><button type="button" class="tab-btn" id="manual-tab-1" role="tab" aria-controls="tab-1" aria-selected="false" tabindex="-1" onclick="switchTab(1)">Read processing</button><button type="button" class="tab-btn" id="manual-tab-2" role="tab" aria-controls="tab-2" aria-selected="false" tabindex="-1" onclick="switchTab(2)">Downstream analysis</button></div>
+<div class="tab-content active" id="tab-0" role="tabpanel" aria-labelledby="manual-tab-0" tabindex="0"><h3>Project</h3><p>The Project tab is where you define your inputs.</p><fieldset class="manual-group"><legend>Marker</legend><p>Choose 16S for bacterial 16S rRNA amplicon sequencing data. This profile applies bacterial taxonomy filtering and produces relative abundance summaries at the Phylum and Genus levels.</p>
+<p>Choose 18S for eukaryotic 18S rRNA amplicon sequencing data. This profile applies eukaryotic taxonomy filtering and reports relative abundance at the Division and Genus levels.</p>
+<p>Below the marker selector, BIOME displays the recommended type of taxonomy reference database for the selected marker. This is only a suggestion—the application does not download or select the database automatically.</p></fieldset><fieldset class="manual-group"><legend>Project files</legend><p>The project requires up to four input locations:</p>
+<ul><li>FASTQ folder</li><li>Metadata file</li><li>Output folder</li><li>Reference database (required only for Taxonomy or Downstream analysis)</li></ul>
+<p>Each location can be selected with the browse button or entered manually.</p>
+<h4>FASTQ folder / ZIP</h4>
+<p>This field supplies the paired-end sequencing reads and is required for every analysis.</p>
+<p>Select either:</p>
+<ul><li>a folder containing FASTQ files, or</li><li>a ZIP archive containing FASTQ files.</li></ul>
+<p>Supported file extensions are:</p>
+<ul><li>.fastq</li><li>.fq</li><li>.fastq.gz</li><li>.fq.gz</li></ul>
+<p>Each sample must contain exactly one forward read and one reverse read.</p>
+<p>For example:</p>
+<pre><code>Sample01_R1.fastq.gz
+Sample01_R2.fastq.gz
+
+Sample01_R1_001.fastq.gz
+Sample01_R2_001.fastq.gz
+
+Sample01_1.fq.gz
+Sample01_2.fq.gz</code></pre>
+<p>If a ZIP archive is selected, it is extracted into an <code>extracted_fastq</code> folder inside the analysis output directory during configuration. Compressed .gz files remain compressed because the pipeline reads them directly.</p>
+<h4>Metadata file</h4>
+<p>The metadata file contains sample information.</p>
+<p>The file must:</p>
+<ul><li>be a UTF-8 comma-separated CSV file (.csv)</li><li>contain a column named exactly <code>SampleID</code></li><li>contain at least one additional metadata column such as Condition</li><li>include one row for every FASTQ sample</li></ul>
+<p>An example is shown below.</p>
+<pre><code>SampleID,Condition
+Sample01,Healthy
+Sample02,Healthy
+Sample03,Grazed</code></pre>
+<p>The <code>SampleID</code> values must match the FASTQ filenames without the read suffix or file extension.</p>
+<p>For example,</p>
+<pre><code>Sample01_R1.fastq.gz
+Sample01_R2.fastq.gz</code></pre>
+<p>correspond to</p>
+<pre><code>Sample01</code></pre>
+<p>in the metadata.</p>
+<h4>Output folder</h4>
+<p>The output folder is where BIOME stores all analysis results.</p>
+<p>For every analysis, BIOME creates a separate folder named</p>
+<pre><code>analysis_&lt;timestamp&gt;</code></pre>
+<p>inside the selected location.</p>
+<p>Each run contains four folders: <code>rds</code>, <code>tables</code>, <code>figures</code>, and <code>logs</code>. Each run calculates fresh results.</p>
+<h4>Reference database</h4>
+<p>The reference database is used to assign taxonomy to inferred ASVs. BIOME does not provide reference databases. Download a reference database yourself, then select its location in this field.</p>
+<p>A reference database is required only when running Taxonomy or Downstream analysis. It is not needed for Read processing alone.</p>
+<p>For 16S analyses, use a DADA2-compatible SILVA training set.</p>
+<p>For 18S analyses, use a DADA2-formatted PR2 SSU/18S training set.</p></fieldset><fieldset class="manual-group"><legend>Analysis settings</legend><h4>Comparison group</h4>
+<p>Select the metadata column you want to use for comparing samples.</p>
+<p>For example, if your metadata contains the columns <code>SampleID</code>, Location, Treatment, and Timepoint, choose the column that defines the comparison you want to make. Selecting Treatment compares samples between treatment groups, while selecting Location compares samples between sampling locations.</p>
+<h4>Reference group</h4>
+<p>The reference group defines the baseline used for differential abundance analysis.</p></fieldset><fieldset class="manual-group"><legend>Pipeline steps</legend><p>BIOME consists of three analysis stages:</p>
+<ul><li>Read processing – Processes raw sequencing reads, including quality filtering, primer removal, denoising, read merging or concatenation, and chimera removal.</li><li>Taxonomy – Assigns taxonomy to ASVs and generates taxonomic summaries and relative abundance results.</li><li>Downstream analysis – Performs diversity analyses, statistical tests, and group comparisons.</li></ul>
+<p>Later stages require earlier ones. Selecting Taxonomy automatically includes Read processing, and selecting Downstream analysis automatically includes both Read processing and Taxonomy.</p>
+<p>To run only Read processing, deselect Downstream analysis first, then deselect Taxonomy. At least one stage must remain selected.</p></fieldset></div>
+<div class="tab-content" id="tab-1" role="tabpanel" aria-labelledby="manual-tab-1" tabindex="0" hidden><h3>Read processing</h3><p>The Read processing tab controls how BIOME prepares sequencing reads before taxonomy assignment and downstream analysis. Here you can remove primers, trim low-quality bases, filter reads, merge paired reads, remove chimeras, filter ASVs by length, and identify experimental controls.</p><fieldset class="manual-group"><legend>Primer removal</legend><p>Choose one of the two primer input methods.</p>
+<h4>I know the primer sequences</h4>
+<p>Use this option if you know the PCR primer sequences.</p>
+<p>Enter the forward primer (R1) and reverse primer (R2) in the standard 5′→3′ orientation. BIOME automatically handles reverse complements where required.</p>
+<p>Only DNA letters are accepted:</p>
+<pre><code>A C G T R Y S W K M B D H V N</code></pre>
+<p>Do not include spaces or 5′/3′ labels.</p>
+<p>BIOME uses Cutadapt to identify and remove primer sequences before quality filtering. Reads without detected primers are retained unless other filtering criteria remove them. Primer trimming results are recorded in <code>cutadapt_primer_removal.log</code>.</p>
+<h4>I only know the primer length</h4>
+<p>Use this option if you only know the primer lengths.</p>
+<p>Enter the number of bases to remove from the beginning of the forward and reverse reads.</p>
+<p>For example, entering 19 and 20 removes the first 19 bases from R1 and the first 20 bases from R2.</p>
+<p>If primers have already been removed, enter 0 for both values.</p></fieldset><fieldset class="manual-group"><legend>Quality truncation</legend><p>Quality truncation removes low-quality bases from the ends of reads. Choose either automatic or manual truncation.</p>
+<h4>Automatically determine truncation length</h4>
+<p>BIOME automatically determines suitable truncation lengths by analysing the median quality profiles of multiple sequencing files.</p>
+<p>The only required parameter is Minimum quality score, which defaults to 30.</p>
+<p>Higher values produce shorter, higher-quality reads. Lower values retain more sequence but may reduce read quality.</p>
+<p>The selected truncation lengths are saved in <code>trunc_len_chosen.txt</code>.</p>
+<h4>Manually specify truncation length</h4>
+<p>Alternatively, you can choose the truncation lengths yourself after inspecting the quality profile plots.</p></fieldset><fieldset class="manual-group"><legend>Advanced filtering</legend><p>Click Advanced filtering to display additional quality filters.</p>
+<p>These settings include:</p>
+<ul><li>Chimera removal method</li><li>Maximum expected errors</li><li>Maximum ambiguous bases</li><li>Minimum quality score for truncation</li><li>Remove PhiX reads</li></ul>
+<h4>Chimera removal method</h4>
+<p>A chimera is an artificial sequence produced during PCR.</p>
+<p>BIOME provides three methods:</p>
+<ul><li>Consensus (recommended)</li><li>Pooled</li><li>None</li></ul>
+<p>Consensus performs well for most datasets and supports multithreading. Pooled is slower and uses a single processing thread on Windows.</p>
+<h4>Maximum expected errors</h4>
+<p>Expected errors estimate sequencing quality using base-quality scores rather than known mismatches.</p>
+<p>Lower values apply stricter filtering.</p>
+<p>Forward and reverse reads must both pass this filter.</p>
+<h4>Maximum ambiguous bases</h4>
+<p>The default value of 0 removes reads containing ambiguous base calls (N).</p>
+<p>Minimum quality score for truncation (default 2) follows DADA2&#x27;s default setting and truncates reads at the first base with a quality score of 2 or lower.</p></fieldset><fieldset class="manual-group"><legend>ASV length filter</legend><p>This filter is applied after read merging and chimera removal.</p>
+<p>By default, all ASV lengths are retained.</p>
+<p>To filter ASVs, specify both a minimum and maximum sequence length. Only ASVs within this range are kept.</p>
+<p>For example, entering 250–260 bp retains sequences between 250 and 260 bp.</p></fieldset><fieldset class="manual-group"><legend>Read merging</legend><p>Choose how paired-end reads are combined.</p>
+<h4>Merge paired reads</h4>
+<p>Forward and reverse reads are merged using their overlapping sequence.</p>
+<p>Additional settings control:</p>
+<ul><li>Minimum overlap (default 12 bp)</li><li>Maximum mismatches (default 0)</li></ul>
+<p>Successful merging requires both sufficient overlap and matching sequences.</p>
+<h4>Concatenate reads</h4>
+<p>Concatenation joins the forward read and the reverse-complemented reverse read, inserting N letter between them instead of merging overlapping sequences.</p>
+<p>Use this option when read overlap is insufficient for merging.</p></fieldset><fieldset class="manual-group"><legend>Experimental controls</legend><p>Experimental controls are identified using metadata</p>
+<h4>Mock community</h4>
+<p>Mock communities contain a known mixture of organisms.</p>
+<p>Select the metadata column and value that identify mock samples.</p>
+<p>Mock samples are automatically excluded from downstream analyses.</p>
+<h4>Negative controls</h4>
+<p>Negative controls, such as extraction blanks or PCR blanks, are used for contaminant detection with decontam.</p>
+<p>Select the metadata column and value that identify negative controls.</p></fieldset></div>
+<div class="tab-content" id="tab-2" role="tabpanel" aria-labelledby="manual-tab-2" tabindex="0" hidden><h3>Downstream analysis</h3><p>The Downstream analysis tab contains the settings for taxonomic summarization, diversity analyses, statistical testing, differential abundance analysis, and publication-ready visualizations.</p><fieldset class="manual-group"><legend>Taxonomy</legend><p>Taxonomy is assigned using the selected DADA2-compatible reference database and marker profile.</p></fieldset><fieldset class="manual-group"><legend>Rarefaction</legend><p>Rarefaction equalizes sequencing depth across samples before calculating diversity metrics.</p>
+<p>Choose one of the three modes below.</p>
+<h4>Automatic</h4>
+<p>Automatic rarefaction evaluates the sample read counts as candidate depths. The maximum sample loss setting excludes depths that remove too many samples (default: 10%, retaining at least 90% of samples).</p>
+<p>For each remaining depth, BIOME estimates the increase in ASV richness with an additional read step (default: 1,000 reads). A sample is considered to have reached a plateau if the estimated richness gain is no greater than the plateau gain threshold (default: 2%). If fewer than 1,000 additional reads are available, the gain is scaled accordingly.</p>
+<p>The minimum samples reaching plateau setting specifies the proportion of retained samples that must reach a plateau (default: 90%). BIOME then selects the depth that retains the most samples while satisfying both the sample-loss and plateau criteria. If no depth qualifies, BIOME issues a warning and uses the lowest observed sample depth.</p>
+<h4>Advanced automatic settings</h4>
+<p>These settings determine how conservative the automatic selection will be.</p>
+<div class="manual-table-wrap"><table class="param-table"><thead><tr><th scope="col">Parameter</th><th scope="col">Recommended</th><th scope="col">Meaning</th></tr></thead><tbody>
+<tr><td>Maximum sample loss (%)</td><td>0−10%</td><td>Maximum percentage of samples that may be excluded when selecting a depth.</td></tr>
+<tr><td>Plateau gain threshold (%)</td><td>1−2%</td><td>Additional richness considered small enough to indicate a plateau. Smaller values require a flatter rarefaction curve.</td></tr>
+<tr><td>Minimum samples at plateau (%)</td><td>80−95%</td><td>Higher values require more retained samples to reach a plateau.</td></tr>
+<tr><td>Evaluation step size (reads)</td><td>500−2000</td><td>Number of reads added when assessing the rarefaction curve. Smaller values are more precise but slower.</td></tr>
+</tbody></table></div>
+<h4>Minimum depth</h4>
+<p>Rarefies every sample to the sequencing depth of the smallest sample.</p>
+<p>This retains all samples but may use a shallow sequencing depth.</p>
+<h4>Custom depth</h4>
+<p>Enter your own rarefaction depth.</p>
+<p>For example,</p>
+<pre><code>10000</code></pre>
+<p>rarefies all retained samples to 10,000 reads.</p>
+<p>Samples with fewer reads than the selected depth are excluded from diversity analyses.</p></fieldset><fieldset class="manual-group"><legend>Alpha diversity</legend>
+<p>Choose one or more metrics: Observed richness, Chao1, Shannon, and Simpson. All four are selected by default.</p>
+<p><strong>Run statistical comparisons</strong> is enabled by default. BIOME automatically selects the appropriate test based on the number of groups.</p>
+<ul>
+<li>Wilcoxon rank-sum (2 groups)</li>
+<li>Kruskal–Wallis + pairwise Wilcoxon (≥3 groups)</li>
+<li>Benjamini–Hochberg (BH) correction</li>
+<li>Skipped if fewer than 2 groups</li>
+</ul>
+</fieldset><fieldset class="manual-group"><legend>Beta diversity</legend><p>Beta diversity measures differences in microbial community composition between samples.</p>
+<h4>Metrics</h4>
+<p>Choose one or more distance metrics.</p>
+<div class="manual-table-wrap"><table class="param-table"><thead><tr><th scope="col">Metric</th><th scope="col">Description</th></tr></thead><tbody>
+<tr><td>Bray-Curtis</td><td>Differences based on taxon abundance.</td></tr>
+<tr><td>Weighted UniFrac</td><td>Phylogenetic distance weighted by abundance.</td></tr>
+<tr><td>Unweighted UniFrac</td><td>Phylogenetic distance based on presence or absence.</td></tr>
+<tr><td>Jaccard</td><td>Community dissimilarity based on shared taxa.</td></tr>
+</tbody></table></div>
+<h4>Ordination</h4>
+<p>Choose how beta diversity is visualized.</p>
+<div class="manual-table-wrap"><table class="param-table"><thead><tr><th scope="col">Method</th><th scope="col">Description</th></tr></thead><tbody>
+<tr><td>PCoA</td><td>Principal Coordinates Analysis. Recommended for most datasets.</td></tr>
+<tr><td>NMDS</td><td>Non-metric Multidimensional Scaling. Useful for complex ecological data.</td></tr>
+<tr><td>PCA</td><td>Principal Component Analysis of rarefied ASV counts.</td></tr>
+</tbody></table></div>
+<h4>Statistical comparisons</h4>
+<p><strong>Run PERMANOVA</strong> tests whether microbial community composition differs between groups.</p>
+<p><strong>Run betadisper before PERMANOVA</strong> tests whether within-group variation is similar before interpreting PERMANOVA.</p>
+<p><strong>Permutations</strong> (default: 999): number of random permutations used to calculate p-values. Higher values increase accuracy but also increase analysis time.</p>
+</fieldset><fieldset class="manual-group"><legend>Differential abundance method</legend><p>Choose one differential abundance method.</p>
+<div class="manual-table-wrap"><table class="param-table"><thead><tr><th scope="col">Method</th><th scope="col">Recommended use</th></tr></thead><tbody>
+<tr><td>ANCOM-BC</td><td>Bias-corrected differential abundance analysis at the genus level.</td></tr>
+<tr><td>DESeq2</td><td>Negative binomial differential abundance analysis at the ASV level.</td></tr>
+<tr><td>ALDEx2</td><td>Compositional differential abundance analysis at the ASV level.</td></tr>
+</tbody></table></div>
+<p>The selected Reference group is used as the baseline for fold-change calculations.</p></fieldset><fieldset class="manual-group"><legend>Relative abundance plots</legend><p>These settings simplify stacked bar plots by grouping low-abundance taxa into Others.</p>
+<h4>Choosing a threshold</h4>
+<ul><li>0% – No grouping.</li><li>1–2% – Light grouping.</li><li>3–5% – More grouping for cleaner plots.</li></ul></fieldset><fieldset class="manual-group"><legend>Plot output</legend><h4>Figure format</h4><p>Select the output format for all figures. Available formats are PNG and PDF.</p></fieldset></div>
+</div>
+  </section>
+
+  <!-- Example -->
+  <section id="dataset" class="section">
+    <div class="section-header">
+      <h2 class="section-title">Example datasets and outputs</h2>
+      <p>Try BIOME with these datasets, or browse example analysis outputs on Google Drive.</p>
+    </div>
+
+    <article class="feature-card" aria-labelledby="dataset-16s-title" style="margin-bottom: 1.5rem;">
+      <h3 id="dataset-16s-title">16S</h3>
+      <p style="margin: 1rem 0;">Coral-associated bacterial communities from Van Phong Bay, Nha Trang, Vietnam.</p>
+      <p style="margin-bottom: 1rem;">NCBI SRA: SRR5964415-SRR5964432.</p>
+      <p style="margin-bottom: 1.5rem; overflow-wrap: anywhere;">
+        [1] Y. Bettarel, S. Halary, J.-C. Auguet, T. C. Mai, N. V. Bui, T. Bouvier, P. Got, C. Bouvier, S. Monteil-Bouchard, and C. Desnues,
+        “Corallivory and the microbial debacle in two branching scleractinians,”
+        <em>The ISME Journal</em>, vol. 12, no. 4, pp. 1109–1126, Apr. 2018.
+        DOI: <a href="https://doi.org/10.1038/s41396-017-0033-5" target="_blank" rel="noopener noreferrer">10.1038/s41396-017-0033-5</a>.
+      </p>
+      <div class="dataset-actions">
+        <a href="https://drive.google.com/drive/folders/1jUDo0DpNPRCIH6v-DygI2H-vIqCV-m2p?usp=drive_link" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Download 16S dataset">
+          Download dataset
+        </a>
+        <a href="https://drive.google.com/drive/folders/1KSIi_SwQOO0K2Um12w2wsrFi27kH6Kjt?usp=drive_link" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          View 16S example outputs
+        </a>
+      </div>
+    </article>
+
+    <article class="feature-card" aria-labelledby="dataset-18s-title">
+      <h3 id="dataset-18s-title">18S</h3>
+      <p style="margin: 1rem 0;">Microeukaryote communities along the Xiaoqing River-to-estuary gradient.</p>
+      <p style="margin-bottom: 1rem;">NCBI SRA: SRR9593178-SRR9593195.</p>
+      <p style="margin-bottom: 1.5rem; overflow-wrap: anywhere;">
+        [2] H. Xu, S. Zhang, G. Ma, Y. Zhang, Y. Li, and H. Pei,
+        “18S rRNA gene sequencing reveals significant influence of anthropogenic effects on microeukaryote diversity and composition along a river-to-estuary gradient ecosystem,”
+        <em>Science of the Total Environment</em>, vol. 705, article 135910, Feb. 2020.
+        DOI: <a href="https://doi.org/10.1016/j.scitotenv.2019.135910" target="_blank" rel="noopener noreferrer">10.1016/j.scitotenv.2019.135910</a>.
+      </p>
+      <div class="dataset-actions">
+        <a href="https://drive.google.com/drive/folders/17zkSLnwHxkagA6auitNRiXyL4g7KOOqL?usp=drive_link" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Download 18S dataset">
+          Download dataset
+        </a>
+        <a href="https://drive.google.com/drive/folders/1nfK-t_8gGL90zTd2AeYWp-zWMLuRQ6cp?usp=drive_link" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          View 18S example outputs
+        </a>
+      </div>
+    </article>
+  </section>
+
+  <!-- Download Section -->
+  <section id="download" class="section">
+     <div class="section-header">
+    <h2 class="section-title">Download app</h2>
+  </div>
+    <div class="download-box">
+      <h2>Get Started with BIOME</h2>
+      <p>Click the button below to download the latest version of BIOME from the GitHub Releases page.</p>
+      <a href="https://github.com/hoang-minh-tho/BIOME/releases" class="btn btn-white" target="_blank">
+        Download BIOME for Windows
+      </a>
+    </div>
+  </section>
+
+  <!-- How to cite Section -->
+  <section id="howtocite" class="section">
+    <div class="section-header">
+      <h2 class="section-title">How to cite</h2>
+    <p style="text-align: center; max-width: 700px; margin: 0 auto 1.5rem; color: var(--gray-text);">
+      If you use BIOME for your research or educational projects, please cite:
+    </p>
+    </div>
+
+    <div class="cite-box">
+      <button class="btn-copy" onclick="copyHowtocite()">Copy</button>
+      <pre class="cite-pre" id="cite-text">@software{hoang2026biome,
+  author       = {Hoang, Minh-Tho and Cao, Hong-Phuc and Bui, Van-Ngoc},
+  title        = {BIOME: Bioinformatic Interface for Optimized Multi-Marker Ecology},
+  year         = {2026},
+  publisher    = {GitHub},
+  url          = {https://hoang-minh-tho.github.io/BIOME/},
+  note         = {Software available from GitHub}
+}</pre>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 hoang-minh-tho. BIOME is released under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.</p>
+    <p style="margin-top: 0.4rem; font-size: 0.8rem;">Bioinformatic Interface for Optimized Multi-Marker Ecology.</p>
+  </footer>
+
+  <script>
+    function switchTab(index) {
+      const tabs = document.querySelectorAll('#tutorial .tab-btn');
+      const contents = document.querySelectorAll('#tutorial .tab-content');
+      tabs.forEach((tab, i) => {
+        tab.classList.toggle('active', i === index);
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      contents.forEach((content, i) => {
+        content.classList.toggle('active', i === index);
+        content.hidden = i !== index;
+      });
+    }
+    document.querySelector('#tutorial .tab-nav').addEventListener('keydown', (event) => {
+      const tabs = [...document.querySelectorAll('#tutorial .tab-btn')];
+      const current = tabs.indexOf(document.activeElement);
+      if (current < 0) return;
+      let next;
+      if (event.key === 'ArrowRight') next = (current + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (current + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      switchTab(next);
+      tabs[next].focus();
+    });
+
+    function copyHowtocite() {
+      const text = document.getElementById('cite-text').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.btn-copy');
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
