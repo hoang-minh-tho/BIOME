@@ -1,6 +1,6 @@
 <img width="2048" height="768" alt="image" src="https://github.com/user-attachments/assets/1088a628-1df1-47b8-8401-ef46a998ab49" />
 
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24037906.svg)](https://doi.org/10.5281/zenodo.24037906)
 **BIOME** is a Windows desktop application for automated end-to-end 16S and 18S rRNA amplicon sequencing analysis. It combines a Python-based graphical user interface with an integrated DADA2-based R pipeline, enabling users to process raw sequencing data through quality control, ASV inference, taxonomic classification, diversity analyses, differential abundance testing, and publication-ready visualizations.
 
 The application is built on the **Automated Microbiome R Pipeline**, enabling researchers to perform microbiome analysis without writing R scripts or using the command line.
